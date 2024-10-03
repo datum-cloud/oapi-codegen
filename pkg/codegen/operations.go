@@ -640,7 +640,6 @@ func OperationDefinitions(swagger *openapi3.T, initialismOverrides bool) ([]Oper
 				// They are the default securityPermissions which are injected into each
 				// path, except for the case where a path explicitly overrides them.
 				opDef.SecurityDefinitions = DescribeSecurityDefinition(swagger.Security)
-
 			}
 
 			if op.RequestBody != nil {
@@ -657,7 +656,7 @@ func OperationDefinitions(swagger *openapi3.T, initialismOverrides bool) ([]Oper
 }
 
 func generateDefaultOperationID(opName string, requestPath string, toCamelCaseFunc func(string) string) (string, error) {
-	var operationId = strings.ToLower(opName)
+	operationId := strings.ToLower(opName)
 
 	if opName == "" {
 		return "", fmt.Errorf("operation name cannot be an empty string")
@@ -986,6 +985,12 @@ func GenerateFiberServer(t *template.Template, operations []OperationDefinition)
 	return GenerateTemplates([]string{"fiber/fiber-interface.tmpl", "fiber/fiber-middleware.tmpl", "fiber/fiber-handler.tmpl"}, t, operations)
 }
 
+// GenerateDatumServer generates all the go code for the ServerInterface as well as
+// all the wrapper functions around our handlers.
+func GenerateDatumServer(t *template.Template, operations []OperationDefinition) (string, error) {
+	return GenerateTemplates([]string{"datum/datum-interface.tmpl", "datum/datum-wrappers.tmpl", "datum/datum-register.tmpl"}, t, operations)
+}
+
 // GenerateEchoServer generates all the go code for the ServerInterface as well as
 // all the wrapper functions around our handlers.
 func GenerateEchoServer(t *template.Template, operations []OperationDefinition) (string, error) {
@@ -1011,7 +1016,6 @@ func GenerateStdHTTPServer(t *template.Template, operations []OperationDefinitio
 }
 
 func GenerateStrictServer(t *template.Template, operations []OperationDefinition, opts Configuration) (string, error) {
-
 	var templates []string
 
 	if opts.Generate.ChiServer || opts.Generate.GorillaServer || opts.Generate.StdHTTPServer {
