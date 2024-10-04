@@ -25,6 +25,10 @@
           "type": "boolean",
           "description": "FiberServer specifies whether to generate fiber server boilerplate"
         },
+        "datum-server": {
+          "type": "boolean",
+          "description": "DatumServer specifies whether to generate datum server boilerplate"
+        },
         "echo-server": {
           "type": "boolean",
           "description": "EchoServer specifies whether to generate echo server boilerplate"

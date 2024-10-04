@@ -201,6 +201,14 @@ func Generate(spec *openapi3.T, opts Configuration) (string, error) {
 		}
 	}
 
+	var datumServerOut string
+	if opts.Generate.DatumServer {
+		datumServerOut, err = GenerateDatumServer(t, ops)
+		if err != nil {
+			return "", fmt.Errorf("error generating Go handlers for Paths: %w", err)
+		}
+	}
+
 	var echoServerOut string
 	if opts.Generate.EchoServer {
 		echoServerOut, err = GenerateEchoServer(t, ops)
@@ -339,6 +347,13 @@ func Generate(spec *openapi3.T, opts Configuration) (string, error) {
 			return "", fmt.Errorf("error writing server path handlers: %w", err)
 		}
 
+	}
+
+	if opts.Generate.DatumServer {
+		_, err = w.WriteString(datumServerOut)
+		if err != nil {
+			return "", fmt.Errorf("error writing server path handlers: %w", err)
+		}
 	}
 
 	if opts.Generate.EchoServer {

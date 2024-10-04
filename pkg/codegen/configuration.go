@@ -47,6 +47,9 @@ func (o Configuration) Validate() error {
 	if o.Generate.FiberServer {
 		nServers++
 	}
+	if o.Generate.DatumServer {
+		nServers++
+	}
 	if o.Generate.EchoServer {
 		nServers++
 	}
@@ -110,6 +113,8 @@ type GenerateOptions struct {
 	ChiServer bool `yaml:"chi-server,omitempty"`
 	// FiberServer specifies whether to generate fiber server boilerplate
 	FiberServer bool `yaml:"fiber-server,omitempty"`
+	// DatumServer specifies whether to generate datum server boilerplate
+	DatumServer bool `yaml:"datum-server,omitempty"`
 	// EchoServer specifies whether to generate echo server boilerplate
 	EchoServer bool `yaml:"echo-server,omitempty"`
 	// GinServer specifies whether to generate gin server boilerplate
