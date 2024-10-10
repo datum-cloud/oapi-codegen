@@ -1,33 +1,33 @@
 
 
-// This is a simple interface which specifies echo.Route addition functions which
-// are present on both echo.Echo and echo.Group, since we want to allow using
+// This is a simple interface which specifies echox.Route addition functions which
+// are present on both echox.Echo and echox.Group, since we want to allow using
 // either of them for path registration
-type EchoRouter interface {
-	CONNECT(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	DELETE(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	GET(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	HEAD(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	OPTIONS(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	PATCH(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	POST(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	PUT(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
-	TRACE(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) echo.RouteInfo
+type EchoxRouter interface {
+	CONNECT(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	DELETE(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	GET(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	HEAD(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	OPTIONS(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	PATCH(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	POST(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	PUT(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
+	TRACE(path string, h echox.HandlerFunc, m ...echox.MiddlewareFunc) echox.RouteInfo
 }
 
 // RegisterHandlers adds each server route to the EchoRouter.
-func RegisterHandlers(router EchoRouter, si ServerInterface, mw []echo.MiddlewareFunc) {
-    RegisterHandlersWithBaseURL(router, si, "", mw)
+func RegisterHandlers(router EchoxRouter, si ServerInterface, m ...echox.MiddlewareFunc) {
+    RegisterHandlersWithBaseURL(router, si, "", m...)
 }
 
 // Registers handlers, and prepends BaseURL to the paths, so that the paths
 // can be served under a prefix.
-func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL string, mw []echo.MiddlewareFunc) {
+func RegisterHandlersWithBaseURL(router EchoxRouter, si ServerInterface, baseURL string, m ...echox.MiddlewareFunc) {
 {{if .}}
     wrapper := ServerInterfaceWrapper{
         Handler: si,
     }
 {{end}}
-{{range .}}router.{{.Method}}(baseURL + "{{.Path | swaggerUriToEchoUri}}", wrapper.{{.OperationId}}, mw...)
+{{range .}}router.{{.Method}}(baseURL + "{{.Path | swaggerUriToEchoUri}}", wrapper.{{.OperationId}}, m...)
 {{end}}
 }
